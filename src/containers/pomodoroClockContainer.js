@@ -70,8 +70,15 @@ var PomodoroClockContainer = React.createClass({
   },
 
   render: function(){
+    var message = (this.state.currentSet == 'pomodoro' ? 'Session': 'Break');
+    var colour =  (this.state.currentSet == 'pomodoro' ? '#99CC00': '#FF4444');
+    var icon = "glyphicon glyphicon-" + (this.state.paused ? 'play': 'pause');
+
     return (<PomodoroClock current={this.state.timer}
       paused={this.state.paused}
+      message={message + 'Time'}
+      icon={icon}
+      colour={colour}
       handlePause={this.toggleTimer}
       handleReset={this.resetTimer}
       />);

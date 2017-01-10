@@ -17,11 +17,21 @@
   text-align: center;
 }
 
-#timer{
-  font-size: 32px;
-}
-
 .btn-lg{
   margin:10px;
   border-radius: 0px;
+}
+
+.well{
+  width:50%;
+  margin:auto;
+  border-radius:100px;
+}
+
+#timer-message{
+  font-size:60px;
+}
+
+#timer{
+  font-size: 7em;
 }

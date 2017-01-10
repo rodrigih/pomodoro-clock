@@ -20488,18 +20488,24 @@ var PomodoroClock = React.createClass({displayName: "PomodoroClock",
 
       return (
         React.createElement("div", null, 
-          React.createElement("h1", null, "Pomodoro Timer"), 
-          React.createElement("p", {id: "timer"}, this.props.current), 
-            React.createElement("button", {type: "button", 
-                    className: "btn btn-info btn-lg", 
-                    onClick: this.props.handlePause}, 
-              "Start"
-            ), 
-            React.createElement("button", {type: "button", 
-                    className: "btn btn-danger btn-lg", 
-                    onClick: this.props.handleReset}, 
-              "Reset"
-            )
+          React.createElement("h1", null, React.createElement("strong", null, "Pomodoro Timer")), 
+          React.createElement("p", {id: "timer-message"}, React.createElement("i", null, this.props.message)), 
+
+          React.createElement("div", {style: {background:this.props.colour}, className: "well well-lg"}, 
+            React.createElement("p", {id: "timer"}, this.props.current)
+          ), 
+
+          React.createElement("button", {type: "button", 
+                  className: "btn btn-info btn-lg", 
+                  onClick: this.props.handlePause}, 
+            React.createElement("span", {className: this.props.icon, "aria-hidden": "true"})
+          ), 
+          React.createElement("button", {type: "button", 
+                  className: "btn btn-danger btn-lg", 
+                  onClick: this.props.handleReset}, 
+            React.createElement("span", {className: "glyphicon glyphicon-stop", "aria-hidden": "true"})
+          )
+
         )
       )
   }
@@ -20581,8 +20587,15 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
   },
 
   render: function(){
+    var message = (this.state.currentSet == 'pomodoro' ? 'Session': 'Break');
+    var colour =  (this.state.currentSet == 'pomodoro' ? '#99CC00': '#FF4444');
+    var icon = "glyphicon glyphicon-" + (this.state.paused ? 'play': 'pause');
+
     return (React.createElement(PomodoroClock, {current: this.state.timer, 
       paused: this.state.paused, 
+      message: message + 'Time', 
+      icon: icon, 
+      colour: colour, 
       handlePause: this.toggleTimer, 
       handleReset: this.resetTimer}
       ));
