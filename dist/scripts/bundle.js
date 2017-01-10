@@ -20458,12 +20458,13 @@ module.exports = require('./lib/React');
 },{"./lib/React":155}],179:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
+var PomodoroClockContainer = require('../containers/pomodoroClockContainer.js');
 
 var App = React.createClass({displayName: "App",
   render: function(){
     return (
       React.createElement("div", {className: "jumbotron"}, 
-        React.createElement("h1", null, "Hello, World!")
+        React.createElement(PomodoroClockContainer, null)
       )
     )
   }
@@ -20471,7 +20472,127 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"react":178,"react-dom":25}],180:[function(require,module,exports){
+},{"../containers/pomodoroClockContainer.js":181,"react":178,"react-dom":25}],180:[function(require,module,exports){
+/*
+  * TODO:
+  * switch this and container, as container do the logic.
+  * currently not working correctly
+*/
+
+'use strict';
+
+var React = require('react');
+
+var PomodoroClock = React.createClass({displayName: "PomodoroClock",
+  render: function(){
+
+      return (
+        React.createElement("div", null, 
+          React.createElement("h1", null, "Pomodoro Timer"), 
+          React.createElement("p", {id: "timer"}, this.props.current), 
+            React.createElement("button", {type: "button", 
+                    className: "btn btn-info btn-lg", 
+                    onClick: this.props.handlePause}, 
+              "Start"
+            ), 
+            React.createElement("button", {type: "button", 
+                    className: "btn btn-danger btn-lg", 
+                    onClick: this.props.handleReset}, 
+              "Reset"
+            )
+        )
+      )
+  }
+
+});
+
+module.exports = PomodoroClock;
+
+},{"react":178}],181:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var PomodoroClock = require('../components/pomodoroClock.js');
+
+var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockContainer",
+  getInitialState: function(){
+      var obj = {
+        pomodoroLength: 5000, //900000
+        breakLength: 3000, //300000
+        currentSet: 'pomodoro',
+        onBreak: false,
+        paused: true
+    };
+
+    obj.current = obj.pomodoroLength;
+    obj.timer = this.timeRemaining(obj.current);
+
+    return obj;
+  },
+
+  updateTime: function(){
+    var newState = {current: this.state.current - 1000};
+
+    /*Handle when current timer is 0*/
+    if(newState.current < 0){
+      if(this.state.currentSet === 'pomodoro'){
+          newState.currentSet = 'break';
+          newState.current = this.state.breakLength;
+      }else{
+          newState.currentSet = 'pomodoro';
+          newState.current = this.state.pomodoroLength;
+      }
+    }
+    newState.timer = this.timeRemaining(newState.current);
+
+    this.setState(newState);
+    console.log("current is: " + this.state.current);
+    console.log("timer is: " + this.state.timer);
+  },
+
+  componentWillUnmount: function(){
+    clearInterval(this.interval);
+  },
+
+  toggleTimer: function(){
+    if(this.state.paused){
+        this.interval = setInterval(this.updateTime,1000);
+    }else {
+        clearInterval(this.interval);
+    }
+
+    this.setState({paused: !this.state.paused});
+  },
+
+  resetTimer: function(){
+    clearInterval(this.interval);
+    this.setState(this.getInitialState);
+  },
+
+  timeRemaining: function(current){
+    var minutes = (Math.floor((current/1000/60)) % 60).toString();
+    var seconds = (Math.floor((current/1000)) % 60).toString();
+
+    if(seconds.length === 1){
+      seconds = "0" + seconds;
+    }
+
+    return minutes + ":" + seconds;
+  },
+
+  render: function(){
+    return (React.createElement(PomodoroClock, {current: this.state.timer, 
+      paused: this.state.paused, 
+      handlePause: this.toggleTimer, 
+      handleReset: this.resetTimer}
+      ));
+  }
+
+});
+
+module.exports = PomodoroClockContainer;
+
+},{"../components/pomodoroClock.js":180,"react":178}],182:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -20480,4 +20601,4 @@ var ReactDOM = require('react-dom');
 var App = require('./components/app.js');
 ReactDOM.render(React.createElement(App, null),document.getElementById('app'));
 
-},{"./components/app.js":179,"react":178,"react-dom":25}]},{},[180]);
+},{"./components/app.js":179,"react":178,"react-dom":25}]},{},[182]);
