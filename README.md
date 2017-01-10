@@ -5,11 +5,11 @@ in general.
 
 If you want to run this, perform the following steps:
 
-'''
+```
 $ git clone https://github.com/rodrigih/pomodoro-clock.git
 $ cd pomodoro-clock
-$ npm install 
+$ npm install
 $ gulp
-'''
+```
 
 This is currently a work in-progress.
