@@ -17,7 +17,8 @@ var config = {
       js: './src/**/*.js',
       css: [
           'node_modules/bootstrap/dist/css/bootstrap.min.css',
-          'node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
+          'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
+          './src/*.css'
       ],
       dist: './dist/',
       mainJS: './src/main.js'
@@ -76,6 +77,7 @@ gulp.task('lint',function(){
 
 gulp.task('watch',function(){
   gulp.watch(config.paths.html, ['html']);
+  gulp.watch(config.paths.css, ['css']);
   gulp.watch(config.paths.js, ['js','lint']);
 });
 
