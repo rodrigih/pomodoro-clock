@@ -26,6 +26,32 @@
   width:50%;
   margin:auto;
   border-radius:100px;
+  padding:10px;
+}
+
+.tabs{
+  color:white;
+  background-color: #3E4D4C;
+  margin: 0;
+  padding: 0;
+}
+
+.tab-link{
+  display: inline-block;
+  padding:1em;
+  color:white;
+  font-size: 2em;
+}
+
+.tab-link:hover, .active{
+  background-color: white;
+  color: black;
+}
+
+#tab-container{
+  width: 60%;
+  margin: auto;
+  border: 2px solid #3E4D4C;
 }
 
 #timer-message{
@@ -33,5 +59,10 @@
 }
 
 #timer{
-  font-size: 7em;
+  font-size: 6em;
+}
+
+#content{
+  padding:20px;
+  font-size: 1.5em;
 }

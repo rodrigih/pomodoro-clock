@@ -20459,12 +20459,16 @@ module.exports = require('./lib/React');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var PomodoroClockContainer = require('../containers/pomodoroClockContainer.js');
+var TabSwitcher = require('../containers/tabSwitcher.js');
 
 var App = React.createClass({displayName: "App",
   render: function(){
     return (
-      React.createElement("div", {className: "jumbotron"}, 
-        React.createElement(PomodoroClockContainer, null)
+      React.createElement("div", null, 
+        React.createElement("div", {className: "jumbotron"}, 
+          React.createElement(PomodoroClockContainer, null)
+        ), 
+        React.createElement(TabSwitcher, null)
       )
     )
   }
@@ -20472,7 +20476,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../containers/pomodoroClockContainer.js":181,"react":178,"react-dom":25}],180:[function(require,module,exports){
+},{"../containers/pomodoroClockContainer.js":183,"../containers/tabSwitcher.js":184,"react":178,"react-dom":25}],180:[function(require,module,exports){
 /*
   * TODO:
   * switch this and container, as container do the logic.
@@ -20515,6 +20519,53 @@ var PomodoroClock = React.createClass({displayName: "PomodoroClock",
 module.exports = PomodoroClock;
 
 },{"react":178}],181:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Tab = React.createClass({displayName: "Tab",
+  render: function(){
+    return (
+      React.createElement("div", {id: "content"}, this.props.content)
+    );
+  }
+});
+
+module.exports = Tab;
+
+},{"react":178}],182:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var Tab = require('./tab.js')
+
+var TabHeader = React.createClass({displayName: "TabHeader",
+  getInitialState: function(){
+      return {active: 'about'};
+  },
+
+  render: function(){
+    var names = ['About','Pomodoro Length', 'Break Length'];
+    var active = this.props.active;
+    var handler = this.props.handler;
+
+    return (
+      React.createElement("ul", {className: "tabs"}, 
+      names.map(function(name,i){
+        return (React.createElement("a", {href: "#", onClick: handler}, 
+          React.createElement("li", {className: 'tab-link' +
+            (name.toLowerCase().split(" ")[0] === active ? ' active' :'')}, 
+                name
+          )
+          ));
+      })
+      ));
+  }
+});
+
+module.exports = TabHeader;
+
+},{"./tab.js":181,"react":178}],183:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -20593,7 +20644,7 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
 
     return (React.createElement(PomodoroClock, {current: this.state.timer, 
       paused: this.state.paused, 
-      message: message + 'Time', 
+      message: message + ' Time', 
       icon: icon, 
       colour: colour, 
       handlePause: this.toggleTimer, 
@@ -20605,7 +20656,66 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
 
 module.exports = PomodoroClockContainer;
 
-},{"../components/pomodoroClock.js":180,"react":178}],182:[function(require,module,exports){
+},{"../components/pomodoroClock.js":180,"react":178}],184:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var TabHeader = require('../components/tabHeader.js');
+var Tab = require('../components/tab.js');
+
+var TabSwitcher = React.createClass({displayName: "TabSwitcher",
+    getInitialState: function(){
+        return {
+          active: 'about'
+        };
+    },
+
+    componentWillMount: function(){
+      var aboutSection = (
+      React.createElement("div", {className: "panel-content"}, 
+      React.createElement("p", null, 
+      "The Pomodoro Technique is a productivity tool created by Francesco Cirillo," + ' ' +
+      "where one works on something productive for a set unit of time" + ' ' +
+      "(usually 25 minutes), called ", React.createElement("i", null, "pomodoros"), ", and then takes a short" + ' ' +
+      "break (usually 5 minutes). ", React.createElement("br", null), " A Pomodoro clock is just a clock that" + ' ' +
+      "applies this technique, so that one can easily alternate between" + ' ' +
+      "productivity and breaks.", 
+      React.createElement("a", {href: "https://en.wikipedia.org/wiki/Pomodoro_Technique", 
+         target: "_blank"}, "More info"
+      )
+      )
+      ) );
+
+      this.content = {
+        about: aboutSection,
+        pomodoro: 'Setting for pomodoro length',
+        break: 'Setting for break length'
+      }
+    },
+
+    handleClick: function(e){
+      var selected = (e.currentTarget.textContent).toLowerCase().split(" ")[0];
+      this.setState({active:selected});
+    },
+
+    getTabContent: function(){
+      var selected = this.state.active;
+
+    },
+
+    render: function(){
+        return (
+          React.createElement("div", {id: "tab-container"}, 
+            React.createElement(TabHeader, {active: this.state.active, handler: this.handleClick}), 
+            React.createElement(Tab, {content: this.content[this.state.active]})
+          )
+        );
+    }
+});
+
+module.exports = TabSwitcher;
+
+},{"../components/tab.js":181,"../components/tabHeader.js":182,"react":178}],185:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -20614,4 +20724,4 @@ var ReactDOM = require('react-dom');
 var App = require('./components/app.js');
 ReactDOM.render(React.createElement(App, null),document.getElementById('app'));
 
-},{"./components/app.js":179,"react":178,"react-dom":25}]},{},[182]);
+},{"./components/app.js":179,"react":178,"react-dom":25}]},{},[185]);

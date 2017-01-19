@@ -1,9 +1,3 @@
-/*
-  * TODO:
-  * switch this and container, as container do the logic.
-  * currently not working correctly
-*/
-
 'use strict';
 
 var React = require('react');

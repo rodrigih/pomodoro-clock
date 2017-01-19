@@ -35,8 +35,6 @@ var PomodoroClockContainer = React.createClass({
     newState.timer = this.timeRemaining(newState.current);
 
     this.setState(newState);
-    console.log("current is: " + this.state.current);
-    console.log("timer is: " + this.state.timer);
   },
 
   componentWillUnmount: function(){
@@ -76,7 +74,7 @@ var PomodoroClockContainer = React.createClass({
 
     return (<PomodoroClock current={this.state.timer}
       paused={this.state.paused}
-      message={message + 'Time'}
+      message={message + ' Time'}
       icon={icon}
       colour={colour}
       handlePause={this.toggleTimer}
