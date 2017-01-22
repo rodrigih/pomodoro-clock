@@ -16,9 +16,9 @@ var TabHeader = React.createClass({
     return (
       <ul className='tabs'>
       {names.map(function(name,i){
-        return (<a href="#" onClick={handler}>
+        return (<a key={i} href="#" onClick={handler}>
           <li className={'tab-link' +
-            (name.toLowerCase().split(" ")[0] === active ? ' active' :'')}>
+                (name.split(" ")[0] === active ? ' active' :'')}>
                 {name}
           </li>
           </a>);

@@ -54,3 +54,18 @@
   padding:20px;
   font-size: 1.5em;
 }
+
+#timer-settings{
+  font-size: 2em;
+  text-align: center;
+  border:thin solid black;
+  width:50%;
+  margin:30px auto;
+}
+
+#timer-settings > h2{
+  color:white;
+  margin:0;
+  background-color: #006CC7;
+  padding:20px;
+}

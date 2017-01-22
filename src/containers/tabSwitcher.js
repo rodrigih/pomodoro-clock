@@ -2,40 +2,28 @@
 
 var React = require('react');
 var TabHeader = require('../components/tabHeader.js');
-var Tab = require('../components/tab.js');
+var TimerSetting = require('../components/timerSetting.js');
 
 var TabSwitcher = React.createClass({
     getInitialState: function(){
         return {
-          active: 'about'
+          active: 'About',
+          pomodoroTime: '15:00',
+          breakTime: '05:00'
         };
     },
 
-    componentWillMount: function(){
-      var aboutSection = (
-      <div className="panel-content">
-      <p>
-      The Pomodoro Technique is a productivity tool created by Francesco Cirillo,
-      where one works on something productive for a set unit of time
-      (usually 25 minutes), called <i>pomodoros</i>, and then takes a short
-      break (usually 5 minutes). <br /> A Pomodoro clock is just a clock that
-      applies this technique, so that one can easily alternate between
-      productivity and breaks.
-      <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
-         target="_blank">More info
-      </a>
-      </p>
-      </div> );
+    changePomodoro: function(newTime){
+      this.setState({pomodoroTime: newTime});
+      console.log("new state is: " + this.state.pomodoroTime);
+    },
 
-      this.content = {
-        about: aboutSection,
-        pomodoro: 'Setting for pomodoro length',
-        break: 'Setting for break length'
-      }
+    changeBreak: function(newTime){
+      this.setState({breakTime: newTime});
     },
 
     handleClick: function(e){
-      var selected = (e.currentTarget.textContent).toLowerCase().split(" ")[0];
+      var selected = (e.currentTarget.textContent).split(" ")[0];
       this.setState({active:selected});
     },
 
@@ -45,10 +33,41 @@ var TabSwitcher = React.createClass({
     },
 
     render: function(){
+
+      var content = {
+        About: ( <div className="panel-content">
+            <p>
+            The Pomodoro Technique is a productivity tool created by Francesco Cirillo,
+            where one works on something productive for a set unit of time
+            (usually 25 minutes), called <i>pomodoros</i>, and then takes a short
+            break (usually 5 minutes). <br /> A Pomodoro clock is just a clock that
+            applies this technique, so that one can easily alternate between
+            productivity and breaks.
+            <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
+               target="_blank">More info
+            </a>
+            </p>
+            </div> ),
+
+        Pomodoro: <TimerSetting label='Pomodoro'
+                                time={this.state.pomodoroTime}
+                                defaultTime="15:00"
+                                onChange={this.changePomodoro}/>,
+
+        Break: <TimerSetting label='Break'
+                             time={this.state.breakTime}
+                             defaultTime="05:00"
+                             onChange={this.changeBreak}/>
+      };
+
         return (
           <div id='tab-container'>
             <TabHeader active={this.state.active} handler={this.handleClick}/>
-            <Tab content={this.content[this.state.active]}/>
+
+            <div id='content'>
+              {content[this.state.active]}
+            </div>
+
           </div>
         );
     }
