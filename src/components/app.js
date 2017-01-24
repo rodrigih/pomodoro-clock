@@ -23,7 +23,8 @@ var App = React.createClass({
     return (
       <div>
         <div className="jumbotron">
-          <PomodoroClockContainer />
+          <PomodoroClockContainer pomodoroTime={this.state.pomodoroTime}
+                                  breakTime={this.state.breakTime} />
         </div>
         <TabSwitcher pomodoroTime={this.state.pomodoroTime}
                      breakTime={this.state.breakTime}

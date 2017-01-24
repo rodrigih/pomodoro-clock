@@ -6,8 +6,8 @@ var PomodoroClock = require('../components/pomodoroClock.js');
 var PomodoroClockContainer = React.createClass({
   getInitialState: function(){
       var obj = {
-        pomodoroLength: 5000, //900000
-        breakLength: 3000, //300000
+        pomodoroLength: this.convertTime(this.props.pomodoroTime),
+        breakLength: this.convertTime(this.props.breakTime),
         currentSet: 'pomodoro',
         onBreak: false,
         paused: true
@@ -17,6 +17,12 @@ var PomodoroClockContainer = React.createClass({
     obj.timer = this.timeRemaining(obj.current);
 
     return obj;
+  },
+
+  convertTime: function(t){
+    var times = t.split(":");
+    var seconds = ( parseInt(times[0]) * 60 ) + parseInt(times[1]);
+    return  seconds * 1000;
   },
 
   updateTime: function(){

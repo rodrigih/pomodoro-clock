@@ -31140,7 +31140,8 @@ var App = React.createClass({displayName: "App",
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "jumbotron"}, 
-          React.createElement(PomodoroClockContainer, null)
+          React.createElement(PomodoroClockContainer, {pomodoroTime: this.state.pomodoroTime, 
+                                  breakTime: this.state.breakTime})
         ), 
         React.createElement(TabSwitcher, {pomodoroTime: this.state.pomodoroTime, 
                      breakTime: this.state.breakTime, 
@@ -31311,8 +31312,8 @@ var PomodoroClock = require('../components/pomodoroClock.js');
 var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockContainer",
   getInitialState: function(){
       var obj = {
-        pomodoroLength: 5000, //900000
-        breakLength: 3000, //300000
+        pomodoroLength: this.convertTime(this.props.pomodoroTime),
+        breakLength: this.convertTime(this.props.breakTime),
         currentSet: 'pomodoro',
         onBreak: false,
         paused: true
@@ -31322,6 +31323,12 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
     obj.timer = this.timeRemaining(obj.current);
 
     return obj;
+  },
+
+  convertTime: function(t){
+    var times = t.split(":");
+    var seconds = ( parseInt(times[0]) * 60 ) + parseInt(times[1]);
+    return  seconds * 1000;
   },
 
   updateTime: function(){
