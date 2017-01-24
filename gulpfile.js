@@ -21,7 +21,7 @@ var config = {
           './src/*.css',
           'node_modules/toastr/build/toastr.css'
       ],
-      dist: './dist/',
+      docs: './docs/',
       mainJS: './src/main.js'
   }
 }
@@ -29,7 +29,7 @@ var config = {
 // Starts local development server
 gulp.task('connect',function(){
     connect.server({
-      root: ['dist'],
+      root: ['docs'],
       port: config.port,
       base: config.devBaseUrl,
       livereload: true
@@ -38,7 +38,7 @@ gulp.task('connect',function(){
 
 // Opens 'index.html' after web port has been connected
 gulp.task('open',['connect'],function(){
-  gulp.src('dist/index.html')
+  gulp.src('docs/index.html')
   .pipe(open({
     uri: config.devBaseUrl + ":" + config.port + '/'
   }));
@@ -47,7 +47,7 @@ gulp.task('open',['connect'],function(){
 // Bundles  HTML files
 gulp.task('html',function(){
   gulp.src(config.paths.html)
-  .pipe(gulp.dest(config.paths.dist))
+  .pipe(gulp.dest(config.paths.docs))
   .pipe(connect.reload());
 });
 
@@ -55,7 +55,7 @@ gulp.task('html',function(){
 gulp.task('css',function(){
   gulp.src(config.paths.css)
   .pipe(concat('bundle.css'))
-  .pipe(gulp.dest(config.paths.dist + '/css'));
+  .pipe(gulp.dest(config.paths.docs + '/css'));
 });
 
 // Bundles JS files
@@ -65,7 +65,7 @@ gulp.task('js',function(){
   .bundle()
   .on('error',console.error.bind(console))
   .pipe(source('bundle.js'))
-  .pipe(gulp.dest(config.paths.dist + '/scripts'))
+  .pipe(gulp.dest(config.paths.docs + '/scripts'))
   .pipe(connect.reload());
 });
 
