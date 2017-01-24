@@ -8,18 +8,7 @@ var TabSwitcher = React.createClass({
     getInitialState: function(){
         return {
           active: 'About',
-          pomodoroTime: '15:00',
-          breakTime: '05:00'
         };
-    },
-
-    changePomodoro: function(newTime){
-      this.setState({pomodoroTime: newTime});
-      console.log("new state is: " + this.state.pomodoroTime);
-    },
-
-    changeBreak: function(newTime){
-      this.setState({breakTime: newTime});
     },
 
     handleClick: function(e){
@@ -50,14 +39,14 @@ var TabSwitcher = React.createClass({
             </div> ),
 
         Pomodoro: <TimerSetting label='Pomodoro'
-                                time={this.state.pomodoroTime}
+                                time={this.props.pomodoroTime}
                                 defaultTime="15:00"
-                                onChange={this.changePomodoro}/>,
+                                onChange={this.props.changePomodoro}/>,
 
         Break: <TimerSetting label='Break'
-                             time={this.state.breakTime}
+                             time={this.props.breakTime}
                              defaultTime="05:00"
-                             onChange={this.changeBreak}/>
+                             onChange={this.props.changeBreak}/>
       };
 
         return (

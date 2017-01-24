@@ -31121,13 +31121,32 @@ var PomodoroClockContainer = require('../containers/pomodoroClockContainer.js');
 var TabSwitcher = require('../containers/tabSwitcher.js');
 
 var App = React.createClass({displayName: "App",
+  getInitialState: function(){
+    return {
+      pomodoroTime: '15:00',
+      breakTime: '05:00'
+    }
+  },
+
+  changePomodoro: function(newTime){
+    this.setState({pomodoroTime: newTime});
+  },
+
+  changeBreak: function(newTime){
+    this.setState({breakTime: newTime});
+  },
+
   render: function(){
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "jumbotron"}, 
           React.createElement(PomodoroClockContainer, null)
         ), 
-        React.createElement(TabSwitcher, null)
+        React.createElement(TabSwitcher, {pomodoroTime: this.state.pomodoroTime, 
+                     breakTime: this.state.breakTime, 
+                     changePomodoro: this.changePomodoro, 
+                     changeBreak: this.changeBreak})
+
       )
     )
   }
@@ -31392,18 +31411,7 @@ var TabSwitcher = React.createClass({displayName: "TabSwitcher",
     getInitialState: function(){
         return {
           active: 'About',
-          pomodoroTime: '15:00',
-          breakTime: '05:00'
         };
-    },
-
-    changePomodoro: function(newTime){
-      this.setState({pomodoroTime: newTime});
-      console.log("new state is: " + this.state.pomodoroTime);
-    },
-
-    changeBreak: function(newTime){
-      this.setState({breakTime: newTime});
     },
 
     handleClick: function(e){
@@ -31434,14 +31442,14 @@ var TabSwitcher = React.createClass({displayName: "TabSwitcher",
             ) ),
 
         Pomodoro: React.createElement(TimerSetting, {label: "Pomodoro", 
-                                time: this.state.pomodoroTime, 
+                                time: this.props.pomodoroTime, 
                                 defaultTime: "15:00", 
-                                onChange: this.changePomodoro}),
+                                onChange: this.props.changePomodoro}),
 
         Break: React.createElement(TimerSetting, {label: "Break", 
-                             time: this.state.breakTime, 
+                             time: this.props.breakTime, 
                              defaultTime: "05:00", 
-                             onChange: this.changeBreak})
+                             onChange: this.props.changeBreak})
       };
 
         return (
