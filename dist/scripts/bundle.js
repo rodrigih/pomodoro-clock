@@ -31355,7 +31355,7 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
 
   toggleTimer: function(){
     if(this.state.paused){
-        this.interval = setInterval(this.updateTime,1000);
+      this.interval = setInterval(this.updateTime,1000);
     }else {
         clearInterval(this.interval);
     }
@@ -31408,7 +31408,7 @@ var TimerSetting = require('../components/timerSetting.js');
 var TabSwitcher = React.createClass({displayName: "TabSwitcher",
     getInitialState: function(){
         return {
-          active: 'About',
+          active: 'About'
         };
     },
 
@@ -31435,7 +31435,15 @@ var TabSwitcher = React.createClass({displayName: "TabSwitcher",
             "productivity and breaks.", 
             React.createElement("a", {href: "https://en.wikipedia.org/wiki/Pomodoro_Technique", 
                target: "_blank"}, "More info"
-            )
+            ), 
+
+            React.createElement("br", null), React.createElement("br", null), 
+
+            "You can adjust your own time for the pomodoro and break units." + ' ' +
+            "Simply click on the appropriate tab and type in the new time. The" + ' ' +
+            "new time must be in the format \"MM:SS\". New Time won't be applied" + ' ' +
+            "until you reset the timer or when the timer comes back to that" + ' ' +
+            "same unit."
             )
             ) ),
 

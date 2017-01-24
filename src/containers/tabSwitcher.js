@@ -7,7 +7,7 @@ var TimerSetting = require('../components/timerSetting.js');
 var TabSwitcher = React.createClass({
     getInitialState: function(){
         return {
-          active: 'About',
+          active: 'About'
         };
     },
 
@@ -35,6 +35,14 @@ var TabSwitcher = React.createClass({
             <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
                target="_blank">More info
             </a>
+
+            <br/><br/>
+
+            You can adjust your own time for the pomodoro and break units.
+            Simply click on the appropriate tab and type in the new time. The
+            new time must be in the format "MM:SS". New Time won't be applied
+            until you reset the timer or when the timer comes back to that
+            same unit.
             </p>
             </div> ),
 

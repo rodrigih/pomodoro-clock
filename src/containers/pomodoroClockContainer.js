@@ -49,7 +49,7 @@ var PomodoroClockContainer = React.createClass({
 
   toggleTimer: function(){
     if(this.state.paused){
-        this.interval = setInterval(this.updateTime,1000);
+      this.interval = setInterval(this.updateTime,1000);
     }else {
         clearInterval(this.interval);
     }
