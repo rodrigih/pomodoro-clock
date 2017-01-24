@@ -31239,6 +31239,12 @@ var TimerSetting = React.createClass({displayName: "TimerSetting",
     this.props.onChange(time);
   },
 
+  handleKeyPress: function(e){
+    if(e.key === 'Enter'){
+      this.onBlur(e);
+    }
+  },
+
   onBlur: function(e){
     var regex = /^([0-9][0-9]):([0-5][0-9])$/;
 
@@ -31272,6 +31278,7 @@ var TimerSetting = React.createClass({displayName: "TimerSetting",
                onClick: this.handleClick, 
                onChange: this.handleChange, 
                onBlur: this.onBlur, 
+               onKeyPress: this.handleKeyPress, 
                autoFocus: true})
       );
     }
