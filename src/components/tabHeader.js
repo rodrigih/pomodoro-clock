@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react');
-var Tab = require('./tab.js')
 
 var TabHeader = React.createClass({
   getInitialState: function(){

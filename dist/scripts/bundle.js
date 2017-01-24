@@ -31154,7 +31154,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../containers/pomodoroClockContainer.js":186,"../containers/tabSwitcher.js":187,"react":179,"react-dom":26}],182:[function(require,module,exports){
+},{"../containers/pomodoroClockContainer.js":185,"../containers/tabSwitcher.js":186,"react":179,"react-dom":26}],182:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31195,22 +31195,6 @@ module.exports = PomodoroClock;
 
 var React = require('react');
 
-var Tab = React.createClass({displayName: "Tab",
-  render: function(){
-    return (
-      React.createElement("div", {id: "content"}, this.props.content)
-    );
-  }
-});
-
-module.exports = Tab;
-
-},{"react":179}],184:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-var Tab = require('./tab.js')
-
 var TabHeader = React.createClass({displayName: "TabHeader",
   getInitialState: function(){
       return {active: 'about'};
@@ -31237,7 +31221,7 @@ var TabHeader = React.createClass({displayName: "TabHeader",
 
 module.exports = TabHeader;
 
-},{"./tab.js":183,"react":179}],185:[function(require,module,exports){
+},{"react":179}],184:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31311,7 +31295,7 @@ var TimerSetting = React.createClass({displayName: "TimerSetting",
 
 module.exports = TimerSetting;
 
-},{"react":179,"toastr":180}],186:[function(require,module,exports){
+},{"react":179,"toastr":180}],185:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31400,7 +31384,7 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
 
 module.exports = PomodoroClockContainer;
 
-},{"../components/pomodoroClock.js":182,"react":179}],187:[function(require,module,exports){
+},{"../components/pomodoroClock.js":182,"react":179}],186:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31467,7 +31451,7 @@ var TabSwitcher = React.createClass({displayName: "TabSwitcher",
 
 module.exports = TabSwitcher;
 
-},{"../components/tabHeader.js":184,"../components/timerSetting.js":185,"react":179}],188:[function(require,module,exports){
+},{"../components/tabHeader.js":183,"../components/timerSetting.js":184,"react":179}],187:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31476,4 +31460,4 @@ var ReactDOM = require('react-dom');
 var App = require('./components/app.js');
 ReactDOM.render(React.createElement(App, null),document.getElementById('app'));
 
-},{"./components/app.js":181,"react":179,"react-dom":26}]},{},[188]);
+},{"./components/app.js":181,"react":179,"react-dom":26}]},{},[187]);
