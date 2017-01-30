@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var toastr = require('toastr');
 var PomodoroClock = require('../components/pomodoroClock.js');
 
 var PomodoroClockContainer = React.createClass({
@@ -19,6 +20,25 @@ var PomodoroClockContainer = React.createClass({
     return obj;
   },
 
+  componentWillReceiveProps: function(nextProps){
+      var newState = {
+        pomodoroLength: this.convertTime(nextProps.pomodoroTime),
+        breakLength: this.convertTime(nextProps.breakTime)
+      };
+
+      if(this.state.onBreak && newState.breakLength !== this.state.breakLength){
+          newState.current = newState.breakLength;
+          newState.timer = this.timeRemaining(newState.current);
+      }
+      else if(!this.state.onBreak &&
+               newState.pomodoroLength !== this.state.pomodoroLength){
+          newState.current = newState.pomodoroLength;
+          newState.timer = this.timeRemaining(newState.current);
+        }
+
+      this.setState(newState);
+  },
+
   convertTime: function(t){
     var times = t.split(":");
     var seconds = ( parseInt(times[0]) * 60 ) + parseInt(times[1]);
@@ -31,9 +51,13 @@ var PomodoroClockContainer = React.createClass({
     /*Handle when current timer is 0*/
     if(newState.current < 0){
       if(this.state.currentSet === 'pomodoro'){
+          toastr.info("It is time for a break.","Break Time",
+            {positionClass:"toast-top-full-width"});
           newState.currentSet = 'break';
           newState.current = this.state.breakLength;
       }else{
+          toastr.info("It is time for productiviy.", "Work Time",
+            {positionClass:"toast-top-full-width"});
           newState.currentSet = 'pomodoro';
           newState.current = this.state.pomodoroLength;
       }

@@ -36,6 +36,10 @@
   color: black;
 }
 
+.btn-primary{
+  margin-left:20px;
+}
+
 #tab-container{
   width: 60%;
   margin: auto;

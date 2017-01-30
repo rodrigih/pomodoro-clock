@@ -39,10 +39,10 @@ var TabSwitcher = React.createClass({
             <br/><br/>
 
             You can adjust your own time for the pomodoro and break units.
-            Simply click on the appropriate tab and type in the new time. The
-            new time must be in the format "MM:SS". New Time won't be applied
-            until you reset the timer or when the timer comes back to that
-            same unit.
+            Simply click on the appropriate tab,type in the new time, and click
+            on "Set Time" (or press Enter). Times must be greater than 0. It is
+            recommended that you pause your timer before changing times, as
+            changing it while it is running may result in unwanted behaviour.
             </p>
             </div> ),
 

@@ -31235,31 +31235,41 @@ var TimerSetting = React.createClass({displayName: "TimerSetting",
       };
   },
 
+  getTime: function(){
+    var minutes = this.refs[this.props.label + "-minutes"].value;
+    var seconds = this.refs[this.props.label + "-seconds"].value;
+
+    return minutes + ":" + seconds;
+  },
+
   handleChange: function(e){
-    var time = e.target.value;
-    this.props.onChange(time);
+    this.props.onChange(this.getTime());
   },
 
   handleKeyPress: function(e){
     if(e.key === 'Enter'){
-      this.onBlur(e);
+      this.setTime(e);
     }
   },
 
-  onBlur: function(e){
+  setTime: function(e){
+    var value = this.getTime();
+
     var regex = /^([0-9][0-9]):([0-5][0-9])$/;
 
     //regex2 is used to fix times without leading zero, such as "2:00"
     var regex2 = /^([0-9]):([0-5][0-9])$/;
 
-    var value = e.target.value;
 
     if(regex2.test(value)){
       value = "0" + value;
     }
     else if(!regex.test(value)){
       value = this.props.defaultTime;
-      toastr.error("Time must be in the proper format 'MM:SS'");
+      toastr.error("Please enter valid numbers for the time","Error");
+    }else if(value === "00:00"){
+      value = this.props.defaultTime;
+      toastr.error("Time must be greater than zero.","Error");
     }
 
     this.props.onChange(value);
@@ -31273,14 +31283,31 @@ var TimerSetting = React.createClass({displayName: "TimerSetting",
   getElement: function(){
     if(this.state.editable){
       return (
-        React.createElement("input", {type: "text", 
-               name: this.props.label + "-timer", 
-               value: this.props.time, 
-               onClick: this.handleClick, 
-               onChange: this.handleChange, 
-               onBlur: this.onBlur, 
-               onKeyPress: this.handleKeyPress, 
-               autoFocus: true})
+        React.createElement("form", null, 
+          React.createElement("input", {type: "text", 
+                 ref: this.props.label + "-minutes", 
+                 onClick: this.handleClick, 
+                 onChange: this.handleChange, 
+                 onKeyPress: this.handleKeyPress, 
+                 maxLength: "2", 
+                 size: "2", 
+                 autoFocus: true}), 
+          ":", 
+          React.createElement("input", {type: "text", 
+                 ref: this.props.label + "-seconds", 
+                 onClick: this.handleClick, 
+                 onChange: this.handleChange, 
+                 onKeyPress: this.handleKeyPress, 
+                 maxLength: "2", 
+                 size: "2"}
+                 ), 
+
+          React.createElement("button", {type: "button", 
+                  className: "btn btn-primary", 
+                  onClick: this.setTime}, 
+            "Set Time"
+          )
+        )
       );
     }
     else{
@@ -31307,6 +31334,7 @@ module.exports = TimerSetting;
 'use strict';
 
 var React = require('react');
+var toastr = require('toastr');
 var PomodoroClock = require('../components/pomodoroClock.js');
 
 var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockContainer",
@@ -31325,6 +31353,25 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
     return obj;
   },
 
+  componentWillReceiveProps: function(nextProps){
+      var newState = {
+        pomodoroLength: this.convertTime(nextProps.pomodoroTime),
+        breakLength: this.convertTime(nextProps.breakTime)
+      };
+
+      if(this.state.onBreak && newState.breakLength !== this.state.breakLength){
+          newState.current = newState.breakLength;
+          newState.timer = this.timeRemaining(newState.current);
+      }
+      else if(!this.state.onBreak &&
+               newState.pomodoroLength !== this.state.pomodoroLength){
+          newState.current = newState.pomodoroLength;
+          newState.timer = this.timeRemaining(newState.current);
+        }
+
+      this.setState(newState);
+  },
+
   convertTime: function(t){
     var times = t.split(":");
     var seconds = ( parseInt(times[0]) * 60 ) + parseInt(times[1]);
@@ -31337,9 +31384,13 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
     /*Handle when current timer is 0*/
     if(newState.current < 0){
       if(this.state.currentSet === 'pomodoro'){
+          toastr.info("It is time for a break.","Break Time",
+            {positionClass:"toast-top-full-width"});
           newState.currentSet = 'break';
           newState.current = this.state.breakLength;
       }else{
+          toastr.info("It is time for productiviy.", "Work Time",
+            {positionClass:"toast-top-full-width"});
           newState.currentSet = 'pomodoro';
           newState.current = this.state.pomodoroLength;
       }
@@ -31398,7 +31449,7 @@ var PomodoroClockContainer = React.createClass({displayName: "PomodoroClockConta
 
 module.exports = PomodoroClockContainer;
 
-},{"../components/pomodoroClock.js":182,"react":179}],186:[function(require,module,exports){
+},{"../components/pomodoroClock.js":182,"react":179,"toastr":180}],186:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31440,10 +31491,10 @@ var TabSwitcher = React.createClass({displayName: "TabSwitcher",
             React.createElement("br", null), React.createElement("br", null), 
 
             "You can adjust your own time for the pomodoro and break units." + ' ' +
-            "Simply click on the appropriate tab and type in the new time. The" + ' ' +
-            "new time must be in the format \"MM:SS\". New Time won't be applied" + ' ' +
-            "until you reset the timer or when the timer comes back to that" + ' ' +
-            "same unit."
+            "Simply click on the appropriate tab,type in the new time, and click" + ' ' +
+            "on \"Set Time\" (or press Enter). Times must be greater than 0. It is" + ' ' +
+            "recommended that you pause your timer before changing times, as" + ' ' +
+            "changing it while it is running may result in unwanted behaviour."
             )
             ) ),
 
